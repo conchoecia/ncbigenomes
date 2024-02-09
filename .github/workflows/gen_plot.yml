@@ -34,3 +34,23 @@ jobs:
       # Runs a single command using the runners shell
       - name: Generates a plot and saves it to the repository.
         run: python testscript.py
+      # We want to save this file to the repository
+      # I got this code from here: https://github.com/orgs/community/discussions/26672
+      - name: Commit the file to the repository
+        id: commit
+        run: |
+          git config --local user.email "action@github.com"
+          git config --local user.name "github-actions"
+          git add iris_plot.pdf
+          if [-z "$(git status --porcelain)"]; then
+             echo "::set-output name=push::false"
+          else
+             git commit -m "Add changes" -a
+             echo "::set-output name=push::true"
+          fi
+        shell: bash
+      - name: Push changes
+        if: steps.commit.outputs.push == 'true'
+        uses: ad-m/github-push-action@master
+        with:
+           github_token: ${{ secrets.GITHUB_TOKEN }}
