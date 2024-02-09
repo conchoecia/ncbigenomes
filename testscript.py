@@ -26,9 +26,10 @@ import matplotlib.pyplot as plt
 def main():
     # Load iris dataset from scikit-learn
     iris = load_iris()
-    iris_df = pd.DataFrame(data=iris.data, columns=iris.feature_names)
-    # remove spaces and (cm) from the column names. Replace the space chars with underscores
-    iris_df.columns = iris_df.columns.str.replace('\(cm\)', '').str.strip().str.replace(' ', '_')
+    colnames = ["sepal_length", "sepal_width",
+               "petal_length", "petal_width"]
+    iris_df = pd.DataFrame(data=iris.data,
+                           columns=colnames)
     print(iris_df)
 
     # Plotting
