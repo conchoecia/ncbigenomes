@@ -1,0 +1,28 @@
+#!/bin/bash
+
+# This is a bash script that provides an easy CLI to run the scripts.
+# The user can run the script with the following options:
+#  - ncbigenomes scrape
+# If the user inputs only `ncbigenomes` without an additional argument, or something
+#  that isn't `ncbigenomes scrape`, then return an error.
+
+# check if there is an argument
+if [ -z "$1" ]; then
+  echo "Please provide a command. Use \`ncbigenomes scrape\`."
+  exit 1
+fi
+
+# check if there is more than one arg provided. If true, just return an error.
+if [ "$#" -gt 1 ]; then
+  echo "Too many arguments. Please use \`ncbigenomes scrape\`."
+  exit 1
+fi
+
+# If there is an argument, check if it is `scrape`
+if [ "$1" = "scrape" ]; then
+  snakemake --cores 1 --snakefile snakefiles/GenDB_scrape_genomes_NCBI.snakefile
+else
+  echo "Invalid command. Please use \`ncbigenomes scrape\`."
+fi
+
+
